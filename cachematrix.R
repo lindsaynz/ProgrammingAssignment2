@@ -5,16 +5,15 @@
 ## 3. I can think logically
 ## 4. I don't know much about R and it's wily ways
 
-
 ## x will be the supplied matrix
 ## y is the cached matrix
 ## z is the inverse of the cached matrix
 
-## This first function creates a special "matrix" object that can cache its inverse
+## This first function creates a special "matrix" object that can cache its inverse and itself
 makeCacheMatrix <- function(x = matrix()) {
         ## matrix is a built in function that will create a matrix.  Syntax is matrix(data, nrow, ncol, byrow, dimnames)
-        y <<- x ## stores the matrix as y
-        z <<- solve(y) ## set z to be the inverse of y
+        z <<- solve(x) ## set z to be the inverse of x
+        y <<- x ## stores the matrix as y so we know if the new matrix is the same as the old
 }
 
 ## This second function computes the inverse of the special "matrix" returned by makeCacheMatrix above. 
@@ -24,8 +23,9 @@ cacheSolve <- function(x, ...) {
         ## Return a matrix that is the inverse of 'x'
         ## Built in function 'solve' will create the inverse of matrix.  Syntax is solve(matrix)
         
-        ##if (identical(x,y) is TRUE) { ## if this matrix is the same as the stored matrix then inverse already exists
-        if (x==y) { ## if this matrix is the same as the stored matrix then inverse already exists
+        if (isTRUE(identical(x,y))) { ## if this matrix is the same as the stored matrix then inverse already exists
+                                      ## and when I use cacheSolve(makeCacheMatrix(c)) where c is my matrix it will always be the same since it's embedded
+                                      ## and so I think I have done something not quite right but haven't solved it yet
                 message ("using cached inverse")
                 return(z)
         }                      
